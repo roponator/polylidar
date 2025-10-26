@@ -80,15 +80,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\tiny_csg-master\3rdp\glm;C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\tiny_csg-master;C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\obj_import_export\headers;$(IncludePath)</IncludePath>
-    <OutDir>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoCSGTinyCSG\x86_64</OutDir>
-    <TargetName>RopoCSGTinyCSG</TargetName>
+    <IncludePath>C:\work\polylidar\include;C:\work\polylidar\build\_deps\extern_parallel_hashmap-src;C:\work\polylidar\build\_deps\extern_marl-src\include;$(IncludePath)</IncludePath>
+    <OutDir>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoPolylidar\x86_64</OutDir>
+    <TargetName>RopoPolidar</TargetName>
+    <LibraryPath>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoPolylidar\x86_64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\tiny_csg-master\3rdp\glm;C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\tiny_csg-master;C:\work\CSGTinyCSG\CSGGeogramWrapper\CSGGeogramWrapperCpp\obj_import_export\headers;$(IncludePath)</IncludePath>
-    <OutDir>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoCSGTinyCSG\x86_64</OutDir>
-    <TargetName>RopoCSGTinyCSG</TargetName>
+    <IncludePath>C:\work\polylidar\include;C:\work\polylidar\build\_deps\extern_parallel_hashmap-src;C:\work\polylidar\build\_deps\extern_marl-src\include;$(IncludePath)</IncludePath>
+    <OutDir>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoPolylidar\x86_64</OutDir>
+    <TargetName>RopoPolidar</TargetName>
+    <LibraryPath>C:\work\unity\UE4_OceanGame\unity_cog_game\Assets\Plugins\RopoPolylidar\x86_64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,17 +130,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;CSGGEOGRAMWRAPPERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;NO_TIMER;TRILIBRARY</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CSGGEOGRAMWRAPPERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;NO_TIMER;TRILIBRARY;NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>C:\work\mpir-master\msvc\vs22\lib_mpir_gc\x64\Release\mpir.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Polylidar.lib;marl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,11 +149,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;CSGGEOGRAMWRAPPERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;NO_TIMER;TRILIBRARY</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;CSGGEOGRAMWRAPPERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;NO_TIMER;TRILIBRARY;NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,33 +161,15 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>C:\work\mpir-master\msvc\vs22\lib_mpir_gc\x64\Release\mpir.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Polylidar.lib;marl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CommonStuff.h" />
-    <ClInclude Include="CSGTinyCSG.h" />
-    <ClInclude Include="obj_import_export\headers\Exporter.h" />
-    <ClInclude Include="obj_import_export\headers\Mesh.h" />
-    <ClInclude Include="obj_import_export\headers\targetver.h" />
-    <ClInclude Include="obj_import_export\headers\Transform.h" />
-    <ClInclude Include="obj_import_export\headers\Vector2f.h" />
-    <ClInclude Include="obj_import_export\headers\Vector3f.h" />
-    <ClInclude Include="tiny_csg-master\csg.hpp" />
-    <ClInclude Include="tiny_csg-master\csg_private.hpp" />
+    <ClInclude Include="RopoPolidar.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CSGTinyCSG.cpp" />
-    <ClCompile Include="obj_import_export\sources\Exporter.cpp" />
-    <ClCompile Include="obj_import_export\sources\Mesh.cpp" />
-    <ClCompile Include="obj_import_export\sources\Vector2f.cpp" />
-    <ClCompile Include="obj_import_export\sources\Vector3f.cpp" />
-    <ClCompile Include="tiny_csg-master\csg.cpp" />
-    <ClCompile Include="tiny_csg-master\query_box.cpp" />
-    <ClCompile Include="tiny_csg-master\query_frustum.cpp" />
-    <ClCompile Include="tiny_csg-master\query_point.cpp" />
-    <ClCompile Include="tiny_csg-master\query_ray.cpp" />
-    <ClCompile Include="tiny_csg-master\rebuild.cpp" />
+    <ClCompile Include="RopoPolidar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

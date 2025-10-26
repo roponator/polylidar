@@ -67,6 +67,54 @@ public:
 		NumVertices = 0;
 		NumIndices = 0;
 	}
+
+};
+
+struct InteropNGonPoly
+{
+public:
+
+	int32_t* PolyIndicesInt32;
+	int NumIndices;
+
+public:
+
+	void Cleanup()
+	{
+		delete[] PolyIndicesInt32;
+		PolyIndicesInt32 = nullptr;
+		NumIndices = 0;
+	}
+};
+
+struct NGonedFaceInteropMesh
+{
+public:
+
+	float_t* Float3DVertices;
+	InteropNGonPoly** Polygons;
+	int NumVertices;
+	int NumPolygons;
+
+public:
+
+	void Cleanup()
+	{
+		for (int i = 0; i < NumPolygons; ++i)
+		{
+			Polygons[i]->Cleanup();
+			delete Polygons[i];
+		}
+
+		delete[] Float3DVertices;
+		delete[] Polygons;
+
+		Float3DVertices = nullptr;
+		Polygons = nullptr;
+
+		NumVertices = 0;
+		NumPolygons = 0;
+	}
 };
 
 enum class BrushType
