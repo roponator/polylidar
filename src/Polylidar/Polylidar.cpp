@@ -65,7 +65,7 @@ Polylidar3D::ExtractPlanesAndPolygons(const Matrix<double>& points, const std::a
     // Extract planes from the mesh from desired plane normal
     timer.Reset();
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     auto planes = ExtractPlanes(mesh, tri_set, plane_data);
 
     Polygons polygons;
@@ -85,7 +85,7 @@ std::tuple<Planes, Polygons> Polylidar3D::ExtractPlanesAndPolygons(MeshHelper::H
     // Extract planes from the mesh from desired plane normal
     timer.Reset();
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     auto planes = ExtractPlanes(mesh, tri_set, plane_data);
 
     Polygons polygons;
@@ -112,13 +112,13 @@ std::tuple<Planes, Polygons> Polylidar3D::ExtractPlanesAndPolygonsOptimized(Mesh
     return std::make_tuple(std::move(planes), std::move(polygons));
 }
 
-std::vector<uint8_t> Polylidar3D::ExtractTriSet(MeshHelper::HalfEdgeTriangulation& mesh,
+std::vector<uint32_t> Polylidar3D::ExtractTriSet(MeshHelper::HalfEdgeTriangulation& mesh,
                                                 const Matrix<double>& plane_normals)
 {
     auto plane_data_list = Utility::CreateMultiplePlaneDataFromNormals(plane_normals);
 
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     CreateTriSet3OptimizedForMultiplePlanes(tri_set, mesh, plane_data_list);
     return tri_set;
 }
@@ -130,7 +130,7 @@ Polylidar3D::ExtractPlanesAndPolygonsOptimized(MeshHelper::HalfEdgeTriangulation
     auto plane_data_list = Utility::CreateMultiplePlaneDataFromNormals(plane_normals);
 
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     // Check the entire triset from the start.
     Utility::Timer timer(true);
     CreateTriSet3OptimizedForMultiplePlanes(tri_set, mesh, plane_data_list);
@@ -182,7 +182,7 @@ std::tuple<PlanesGroup, PolygonsGroup> Polylidar3D::ExtractPlanesAndPolygons(Mes
     auto plane_data_list = Utility::CreateMultiplePlaneDataFromNormals(plane_normals);
     // Create tri_set
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     // Check the entire triset from the start.
     Utility::Timer timer(true);
     CreateTriSet3OptimizedForMultiplePlanes(tri_set, mesh, plane_data_list);
@@ -220,7 +220,7 @@ Polylidar3D::ExtractPlanesAndPolygonsOptimizedClassified(MeshHelper::HalfEdgeTri
     auto plane_data_list = Utility::CreateMultiplePlaneDataFromNormals(plane_normals);
     // Create tri_set
     size_t max_triangles = mesh.triangles.rows;
-    std::vector<uint8_t> tri_set(max_triangles, ZERO_UINT8);
+    std::vector<uint32_t> tri_set(max_triangles, ZERO_UINT32);
     // Check the entire triset from the start.
     Utility::Timer timer(true);
     CreateTriSet3ClassifiedOptimizedForMultiplePlanes(tri_set, mesh, plane_data_list);
@@ -247,7 +247,7 @@ Polylidar3D::ExtractPlanesAndPolygonsOptimizedClassified(MeshHelper::HalfEdgeTri
 }
 
 std::tuple<Planes, Polygons> Polylidar3D::ExtractPlanesWithTasks(MeshHelper::HalfEdgeTriangulation& mesh,
-                                                                 std::vector<uint8_t>& tri_set, PlaneData& plane_data)
+                                                                 std::vector<uint32_t>& tri_set, PlaneData& plane_data)
 {
 
     // Planes planes; // will contain the planes extracted on this normal
@@ -313,7 +313,7 @@ std::tuple<Planes, Polygons> Polylidar3D::ExtractPlanesWithTasks(MeshHelper::Hal
     return std::make_tuple(std::move(planes), std::move(polygons));
 }
 
-Planes Polylidar3D::ExtractPlanes(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t>& tri_set,
+Planes Polylidar3D::ExtractPlanes(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint32_t>& tri_set,
                                   PlaneData& plane_data, bool tri_set_finished)
 {
     Planes planes;
@@ -349,7 +349,7 @@ Planes Polylidar3D::ExtractPlanes(MeshHelper::HalfEdgeTriangulation& mesh, std::
     return planes;
 }
 
-void Polylidar3D::CreateTriSet2(std::vector<uint8_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh)
+void Polylidar3D::CreateTriSet2(std::vector<uint32_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh)
 {
     int numTriangles = static_cast<int>(mesh.triangles.rows);
 // Ensure that each thread has at least PL_OMP_ELEM_PER_THREAD_TRISET
@@ -361,8 +361,8 @@ void Polylidar3D::CreateTriSet2(std::vector<uint8_t>& tri_set, MeshHelper::HalfE
 #endif
     for (int t = 0; t < numTriangles; t++)
     {
-        if (tri_set[t] != ZERO_UINT8) continue;
-        tri_set[t] = Utility::ValidateTriangle2D(t, mesh, alpha, lmax) ? ONE_UINT8 : MAX_UINT8;
+        if (tri_set[t] != ZERO_UINT32) continue;
+        tri_set[t] = Utility::ValidateTriangle2D(t, mesh, alpha, lmax) ? ONE_UINT32 : MAX_UINT32;
     }
 }
 
@@ -377,7 +377,7 @@ inline RowMatrixX3d CreatePlaneNormalMatrix(std::vector<PlaneData>& plane_data_l
     return a;
 }
 
-void Polylidar3D::CreateTriSet3OptimizedForMultiplePlanes(std::vector<uint8_t>& tri_set,
+void Polylidar3D::CreateTriSet3OptimizedForMultiplePlanes(std::vector<uint32_t>& tri_set,
                                                           MeshHelper::HalfEdgeTriangulation& mesh,
                                                           std::vector<PlaneData>& plane_data_list)
 {
@@ -410,13 +410,13 @@ void Polylidar3D::CreateTriSet3OptimizedForMultiplePlanes(std::vector<uint8_t>& 
             }
         }
 
-        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT8 : MAX_UINT8;
-        uint8_t valid3D = std::abs(maxDotProduct) > norm_thresh_min ? plane_data_list[idx].normal_id : ZERO_UINT8;
+        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT32 : MAX_UINT32;
+        uint8_t valid3D = std::abs(maxDotProduct) > norm_thresh_min ? plane_data_list[idx].normal_id : ZERO_UINT32;
         tri_set[t] = valid2D | valid3D;
     }
 }
 
-void Polylidar3D::CreateTriSet3ClassifiedOptimizedForMultiplePlanes(std::vector<uint8_t>& tri_set,
+void Polylidar3D::CreateTriSet3ClassifiedOptimizedForMultiplePlanes(std::vector<uint32_t>& tri_set,
                                                                     MeshHelper::HalfEdgeTriangulation& mesh,
                                                                     std::vector<PlaneData>& plane_data_list)
 {
@@ -449,15 +449,15 @@ void Polylidar3D::CreateTriSet3ClassifiedOptimizedForMultiplePlanes(std::vector<
             }
         }
 
-        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT8 : MAX_UINT8;
-        uint8_t valid4D = Utility::GetAllVertexClasses(t, mesh) ? ZERO_UINT8 : MAX_UINT8;
+        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT32 : MAX_UINT32;
+        uint8_t valid4D = Utility::GetAllVertexClasses(t, mesh) ? ZERO_UINT32 : MAX_UINT32;
         auto threshold = valid4D == 0 ? norm_thresh : norm_thresh_min;
-        uint8_t valid3D = std::abs(maxDotProduct) > threshold ? plane_data_list[idx].normal_id : ZERO_UINT8;
+        uint8_t valid3D = std::abs(maxDotProduct) > threshold ? plane_data_list[idx].normal_id : ZERO_UINT32;
         tri_set[t] = valid2D | valid3D | valid4D;
     }
 }
 
-void Polylidar3D::CreateTriSet3Optimized(std::vector<uint8_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
+void Polylidar3D::CreateTriSet3Optimized(std::vector<uint32_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
                                          PlaneData& plane_data)
 {
     // std::cout << "Calling CreateTriSet3Optimized" << std::endl;
@@ -475,11 +475,11 @@ void Polylidar3D::CreateTriSet3Optimized(std::vector<uint8_t>& tri_set, MeshHelp
 #endif
     for (int t = 0; t < numTriangles; t++)
     {
-        if (tri_set[t] != ZERO_UINT8) continue;
-        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT8 : MAX_UINT8;
+        if (tri_set[t] != ZERO_UINT32) continue;
+        uint8_t valid2D = Utility::ValidateTriangleLength(t, mesh, lmax) ? ZERO_UINT32 : MAX_UINT32;
         uint8_t valid3D = std::abs(triangles_normals_e.row(t).dot(plane_normal)) > norm_thresh_min
                               ? plane_data.normal_id
-                              : ZERO_UINT8;
+                              : ZERO_UINT32;
         tri_set[t] = valid2D | valid3D;
     }
 }

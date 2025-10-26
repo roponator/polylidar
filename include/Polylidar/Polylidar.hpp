@@ -65,7 +65,8 @@ class Polylidar3D
     Polylidar3D(const double _alpha = PL_DEFAULT_ALPHA, const double _lmax = PL_DEFAULT_LMAX,
                 const size_t _min_triangles = PL_DEFAULT_MINTRIANGLES,
                 const size_t _min_hole_vertices = PL_DEFAULT_MINHOLEVERTICES,
-                const double _z_thresh = PL_DEFAULT_ZTHRESH, const double _norm_thresh = PL_DEFAULT_NORMTHRESH,
+                const double _z_thresh = PL_DEFAULT_ZTHRESH, 
+                const double _norm_thresh = PL_DEFAULT_NORMTHRESH,
                 const double _norm_thresh_min = PL_DEFAULT_NORMTHRESH_MIN,
                 const int _task_threads = PL_DEFAULT_TASK_THREADS);
 
@@ -145,9 +146,9 @@ class Polylidar3D
      *
      * @param mesh
      * @param plane_normals
-     * @return std::vector<uint8_t>
+     * @return std::vector<uint32_t>
      */
-    std::vector<uint8_t> ExtractTriSet(MeshHelper::HalfEdgeTriangulation& mesh, const Matrix<double>& plane_normals);
+    std::vector<uint32_t> ExtractTriSet(MeshHelper::HalfEdgeTriangulation& mesh, const Matrix<double>& plane_normals);
 
   public:
     /** @brief Maximum circumcircle radius of a triangle. Filters 'big' triangles. Only applicable for 2D point sets. A
@@ -174,17 +175,17 @@ class Polylidar3D
     std::shared_ptr<marl::Scheduler> scheduler;
 
   private:
-    Planes ExtractPlanes(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t>& tri_set, PlaneData& plane_data,
+    Planes ExtractPlanes(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint32_t>& tri_set, PlaneData& plane_data,
                          bool tri_set_finished = false);
     std::tuple<Planes, Polygons> ExtractPlanesWithTasks(MeshHelper::HalfEdgeTriangulation& mesh,
-                                                        std::vector<uint8_t>& tri_set, PlaneData& plane_data);
-    void CreateTriSet2(std::vector<uint8_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh);
+                                                        std::vector<uint32_t>& tri_set, PlaneData& plane_data);
+    void CreateTriSet2(std::vector<uint32_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh);
 
-    void CreateTriSet3Optimized(std::vector<uint8_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
+    void CreateTriSet3Optimized(std::vector<uint32_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
                                 PlaneData& plane_data);
-    void CreateTriSet3OptimizedForMultiplePlanes(std::vector<uint8_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
+    void CreateTriSet3OptimizedForMultiplePlanes(std::vector<uint32_t>& tri_set, MeshHelper::HalfEdgeTriangulation& mesh,
                                                  std::vector<PlaneData>& plane_data_list);
-    void CreateTriSet3ClassifiedOptimizedForMultiplePlanes(std::vector<uint8_t>& tri_set,
+    void CreateTriSet3ClassifiedOptimizedForMultiplePlanes(std::vector<uint32_t>& tri_set,
                                                                         MeshHelper::HalfEdgeTriangulation& mesh,
                                                                         std::vector<PlaneData>& plane_data_list);
 };

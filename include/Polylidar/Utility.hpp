@@ -59,10 +59,11 @@ inline void UpdatePlaneDataWithRotationInformation(PlaneData& plane_data)
 inline std::vector<PlaneData> CreateMultiplePlaneDataFromNormals(const Matrix<double>& normals)
 {
     std::vector<PlaneData> configs;
-    if (normals.rows > 253)
+    if (normals.rows > (MAX_UINT32 - 2))
     {
-        throw std::domain_error("A max of 254 unit normals are allowed. Please reduce the amount of normals.");
+        throw std::domain_error("A max of MAX_UINT32 unit normals are allowed. Please reduce the amount of normals.");
     }
+
     for (size_t i = 0; i < normals.rows; i++)
     {
         PlaneData plane_data;

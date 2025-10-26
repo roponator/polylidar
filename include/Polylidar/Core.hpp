@@ -12,7 +12,7 @@ namespace Core {
 
 
 
-void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t>& tri_set, size_t seed_idx,
+void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint32_t>& tri_set, size_t seed_idx,
                     std::vector<size_t>& candidates, const PlaneData &plane_data, const double &z_thresh);
 void ConstructPointHash(VUI& plane, MeshHelper::HalfEdgeTriangulation& mesh, PointHash& point_hash, EdgeSet& edge_hash,
                         ExtremePoint& xPoint, PlaneData& plane_data);

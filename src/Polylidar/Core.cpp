@@ -79,7 +79,7 @@ inline void UpdateAverage(double* old_average, const double* new_point, int samp
 }
 
 // need unit normal, and z_thresh
-void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t>& tri_set, size_t seed_idx,
+void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint32_t>& tri_set, size_t seed_idx,
                     std::vector<size_t>& candidates, const PlaneData& plane_data, const double& z_thresh)
 {
     // Construct queue for triangle neighbor expansion
@@ -94,7 +94,7 @@ void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t
 
     // Add seed index to queue and "erase" from tri set
     queue.push(seed_idx);
-    tri_set[seed_idx] = MAX_UINT8;
+    tri_set[seed_idx] = MAX_UINT32;
 
     // aliases
     auto& halfedges = mesh.halfedges;
@@ -145,7 +145,7 @@ void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t
                         {
                             // Push triangle onto planar segment
                             queue.push(tn);
-                            tri_set[tn] = MAX_UINT8;
+                            tri_set[tn] = MAX_UINT32;
                             // update rolling average
                             // TODO maybe just stick to the seed point?
                             samples++;
@@ -169,6 +169,8 @@ void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t
             for (size_t i = 0; i < 3; ++i)
             {
                 auto e = tri * 3 + i;
+
+                //if(e >= halfedges.)
                 auto opposite = halfedges(e);
                 if (opposite != Utility::INVALID_INDEX)
                 {
@@ -178,7 +180,7 @@ void ExtractMeshSet(MeshHelper::HalfEdgeTriangulation& mesh, std::vector<uint8_t
                     {
                         // Push triangle onto planar segment
                         queue.push(tn);
-                        tri_set[tn] = MAX_UINT8;
+                        tri_set[tn] = MAX_UINT32;
                     }
                 }
             }
@@ -212,7 +214,7 @@ void ConstructPointHash(VUI& plane, MeshHelper::HalfEdgeTriangulation& mesh, Poi
     auto& points = mesh.vertices;
 
     size_t max_triangles_all = static_cast<size_t>(triangles.rows);
-    std::vector<uint8_t> triSet(max_triangles_all, false);
+    std::vector<uint32_t> triSet(max_triangles_all, false);
 
     size_t max_triangles = static_cast<size_t>(plane.size());
 
@@ -226,7 +228,7 @@ void ConstructPointHash(VUI& plane, MeshHelper::HalfEdgeTriangulation& mesh, Poi
     // create a hash of all triangles in this plane set
     for (auto&& t : plane)
     {
-        triSet[t] = ONE_UINT8;
+        triSet[t] = ONE_UINT32;
     }
     // auto after = std::chrono::high_resolution_clock::now();
     // auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(after - before);

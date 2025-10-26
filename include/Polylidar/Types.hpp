@@ -66,11 +66,17 @@ static constexpr std::array<double, 2> DOWN_VECTOR = {0.0, -1.0};
 /** @brief 3X3 identity rotation matrix*/
 static constexpr std::array<double, 9> PL_DEFAULT_IDENTITY_RM{1, 0, 0, 0, 1, 0, 0, 0, 1};
 /** @brief Will be used to indicate an invalid triangle */
-static constexpr uint8_t ZERO_UINT8 = static_cast<uint8_t>(0);
+//static constexpr uint8_t ZERO_UINT8 = static_cast<uint8_t>(0);
 /** @brief Default valid group */
-static constexpr uint8_t ONE_UINT8 = static_cast<uint8_t>(1);
+//static constexpr uint8_t ONE_UINT8 = static_cast<uint8_t>(1);
 /** @brief Will be used to indicate an invalid triangle */
-static constexpr uint8_t MAX_UINT8 = static_cast<uint8_t>(255);
+//static constexpr uint8_t MAX_UINT8 = static_cast<uint8_t>(255);
+
+static constexpr uint32_t ZERO_UINT32 = static_cast<uint32_t>(0);
+/** @brief Default valid group */
+static constexpr uint32_t ONE_UINT32 = static_cast<uint32_t>(1);
+/** @brief Will be used to indicate an invalid triangle */
+static constexpr uint32_t MAX_UINT32 = static_cast<uint32_t>(_UI32_MAX);
 
 /**
  * This class hold a generic matrix datastructure used to hold much of the data in our meshes (vertices, triangles, etc.).
@@ -290,7 +296,7 @@ struct PlaneData
     std::array<double, 3> plane_normal = PL_DEFAULT_DESIRED_VECTOR;
     std::array<double, 9> rotation_matrix = PL_DEFAULT_IDENTITY_RM;
     bool need_rotation = false;
-    uint8_t normal_id = ONE_UINT8;
+    uint32_t normal_id = ONE_UINT32;
 };
 /** @brief Vector of polygons */
 using Polygons = std::vector<Polygon>;
